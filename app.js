@@ -1,7 +1,7 @@
 const express = require('express')
 const hbs = require('hbs')
 const session = require('express-session');
-
+const path = require('path');
 
 var app = express();
 
@@ -11,10 +11,11 @@ app.use(session({
     secret: 'abcc##$$0911233$%%%32222', 
     cookie: { maxAge: 60000 }}));
 
-app.set('view engine','hbs')
+app.set('view engine','hbs');
+app.set('views', path.join(__dirname, 'views'))
 
 var MongoClient = require('mongodb').MongoClient;
-var url =  "mongodb+srv://tommy:123456abc@cluster0.lkrga.mongodb.net/test";
+var url =  "mongodb+srv://ngovanduc:ductnvn12345@cluster0.6iihr.mongodb.net/test";
 
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,7 +33,7 @@ app.post('/search', async (req,res)=>{
     const results =  await dbHandler.searchSanPham(searchText,"SanPham");
     res.render('allProduct',{model:results})
 })
-
+////////
 app.post('/update',async (req,res)=>{
     const id = req.body.id;
     const nameInput = req.body.txtName;
@@ -42,10 +43,12 @@ app.post('/update',async (req,res)=>{
     const condition = {"_id" : ObjectID(id)};
     
     const client= await MongoClient.connect(url);
-    const dbo = client.db("DoQuocBinhDB");
+    const dbo = client.db("NgoVanDucDB");
     await dbo.collection("SanPham").updateOne(condition,newValues);
     res.redirect('/view');
 })
+
+
 app.get('/delete',async (req,res)=>{
     const id = req.query.id;
     var ObjectID = require('mongodb').ObjectID;
@@ -69,7 +72,7 @@ app.get('/edit',async (req,res)=>{
     const condition = {"_id" : ObjectID(id)};
 
     const client= await MongoClient.connect(url);
-    const dbo = client.db("DoQuocBinhDB");
+    const dbo = client.db("NgoVanDucDB");
     const productToEdit = await dbo.collection("SanPham").findOne(condition);
     res.render('edit',{product:productToEdit})
 })

@@ -1,7 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
-const url =  "mongodb+srv://tommy:123456abc@cluster0.lkrga.mongodb.net/test";
-const dbName = "DoQuocBinhDB";
-
+const url =  "mongodb+srv://ngovanduc:ductnvn12345@cluster0.6iihr.mongodb.net/test";
+const dbName = "NgoVanDucDB";
 
 async function  searchSanPham(condition,collectionName){  
     const dbo = await getDbo();
